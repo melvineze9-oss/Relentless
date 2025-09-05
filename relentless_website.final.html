@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relentless</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .page {
+            display: none;
+            min-height: 100vh;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        .header {
+            padding: 2rem 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            font-family: 'Arial Black', Arial, sans-serif;
+            letter-spacing: 0.05em;
+            color: #ffffff;
+            text-transform: uppercase;
+            opacity: 0.6;
+            margin: 0;
+        }
+
+        .waitlist-btn-header {
+            background: linear-gradient(135deg, #333333, #555555);
+            color: white;
+            border: 1px solid #666666;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: none;
+            z-index: 10;
+        }
+
+        .waitlist-btn-header:hover {
+            background: linear-gradient(135deg, #555555, #777777);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Page 1 - Landing */
+        .hero {
+            text-align: center;
+            padding: 8rem 0 4rem;
+        }
+
+        .title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            font-family: 'Arial Black', Arial, sans-serif;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: #bbbbbb;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .description {
+            max-width: 600px;
+            margin: 0 auto 4rem;
+            font-size: 1.1rem;
+            color: #999999;
+            line-height: 1.8;
+        }
+
+        .access-form {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 3rem;
+            max-width: 500px;
+            margin: 0 auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #cccccc;
+            font-weight: 500;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 120px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #666666;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #333333, #555555);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 1.1rem;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #555555, #777777);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Page 2 - Service */
+        .service-page {
+            padding: 4rem 0;
+        }
+
+        .service-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .service-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 2rem;
+            margin-top: 3rem;
+            color: #ffffff;
+        }
+
+        .service-description {
+            font-size: 1.2rem;
+            color: #bbbbbb;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .waitlist-cta {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 3rem auto;
+            max-width: 600px;
+        }
+
+        .cta-text {
+            margin-bottom: 2rem;
+            color: #cccccc;
+            font-size: 1.1rem;
+        }
+
+        /* Page 3 - Waitlist Form */
+        .waitlist-form-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .waitlist-form {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .waitlist-form h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .waitlist-form p {
+            color: #bbbbbb;
+            margin-bottom: 2rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #666666;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #777777;
+        }
+
+        /* Page 4 - Thank You */
+        .thank-you-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .thank-you-content {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 3rem;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .thank-you-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #ffffff;
+        }
+
+        .thank-you-message {
+            color: #cccccc;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .signature {
+            color: #999999;
+            font-style: italic;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Line in the Sand Separator */
+        .line-separator {
+            margin: 4rem 0;
+            text-align: center;
+        }
+
+        .simple-line {
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #666666, transparent);
+            margin: 0 auto 1rem;
+            opacity: 0.8;
+        }
+
+        .line-quote {
+            font-size: 0.9rem;
+            color: #bbbbbb;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            margin: 0;
+            font-style: italic;
+            text-transform: lowercase;
+        }
+
+        /* Back link */
+        .back-link {
+            margin-top: 3rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #666666;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+            font-family: inherit;
+        }
+
+        .back-btn:hover {
+            color: #999999;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .waitlist-btn-header {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin-bottom: 2rem;
+                display: inline-block;
+            }
+            
+            .hero {
+                padding: 4rem 0 2rem;
+            }
+            
+            .access-form,
+            .waitlist-form,
+            .thank-you-content {
+                padding: 2rem;
+                margin: 1rem;
+            }
+        }
+
+        /* Subtle animations */
+        .btn, .waitlist-btn-header {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before, .waitlist-btn-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before, .waitlist-btn-header:hover::before {
+            left: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Page 1: Landing -->
+    <div class="page active" id="page1">
+        <div class="container">
+            <div class="hero">
+                <h1 class="title">Relentless</h1>
+                <p class="subtitle">For those wired the same</p>
+                
+                <div class="description">
+                    <p>Ambitious students. Relentless projects. A brotherhood built to launch and win together. We're a startup building startups. Relentless is for YOU. Students, graduates, people with that inner fire, who refuse inaction — a place to launch projects, sharpen skills, and pull ourselves out of the dust....</p>
+                    
+                    <p style="margin-top: 2rem; font-style: italic; color: #cccccc;">"If they fall, you drag them up. If you fall, they drag you."</p>
+                    
+                    <p style="margin-top: 1rem; color: #aaaaaa;">Failing is essential for the process, it will eventually lead to success</p>
+                </div>
+
+                <div class="access-form">
+                    <div class="form-group">
+                        <label for="failure-story">Tell me about your most recent failure / setback</label>
+                        <textarea id="failure-story" placeholder="Tell us about your experience..." required></textarea>
+                    </div>
+                    <button class="btn" onclick="proceedToService()">Access Our Platform</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 2: Service -->
+    <div class="page" id="page2">
+        <div class="container">
+            <div class="header">
+                <h1 class="header-title">Relentless</h1>
+                <a href="#" class="waitlist-btn-header" onclick="showWaitlist()">Waitlist</a>
+            </div>
+            
+            <div class="service-content">
+                <h2 class="service-title">What's in it for you?</h2>
+                <div class="service-description">
+                    <p>The Relentless Run is a 4-week sprint where ambitious students and graduates launch ideas, build MVPs, and grow together inside a no-excuses environment. You'll get accountability partners, live guidance, and practical tools (yes, including AI) to turn bold visions into real projects. In just one month, you'll leave with proof of progress, a network that pushes you, and the fire to keep building.</p>
+                </div>
+
+                <!-- Line in the Sand Graphic -->
+                <div class="line-separator">
+                    <div class="simple-line"></div>
+                    <p class="line-quote">draw a line in the sand</p>
+                </div>
+
+                <h2 class="service-title" style="margin-top: 3rem;">The Vision</h2>
+                <div class="service-description">
+                    <p>Relentless exists to build a new kind of students and young founders. We are honest with each other, ruthless with excuses, understand each other's problems and obsessed with progress. This is a fraternity where you find partners, launch projects, and push past limits together. Our vision is simple: a place where the next generation of builders grow side by side</p>
+                </div>
+
+                <div class="waitlist-cta" style="margin-top: 5rem;">
+                    <p class="cta-text">Join the first few of Relentless — help shape the movement from day ONE.</p>
+                    <button class="btn" onclick="showWaitlist()">Join Waitlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 3: Waitlist Form -->
+    <div class="page" id="page3">
+        <div class="container">
+            <div class="waitlist-form-page">
+                <div class="waitlist-form">
+                    <h2>Join the Waitlist</h2>
+                    <p>Be among the first to join our community when we launch.</p>
+                    
+                    <div>
+                        <div class="form-group">
+                            <input type="text" id="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" placeholder="Your Email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address">
+                        </div>
+                        <button type="button" class="btn" onclick="submitWaitlist()">Join Waitlist</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 4: Thank You -->
+    <div class="page" id="page4">
+        <div class="container">
+            <div class="thank-you-page">
+                <h3 style="font-size: 1.5rem; color: #ffffff; margin-bottom: 2rem; font-weight: 600; opacity: 0.7; font-family: 'Arial Black', Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; text-align: center;">You're In!</h3>
+                <div class="thank-you-content">
+                    <h2>About Your Failure</h2>
+                    <div class="thank-you-message">
+                        <p>It is a great thing that you failed. I, the founder of Relentless, have failed countless times already - I pretty much always failed. But failure is the building block of success. It means that you are putting yourself in new and difficult situations and even if you come out of it with a loss, in total you still won cuz you learned and grew. Now with these words thank you for joining the waitlist, we'll contact you soon (Email;)</p>
+                    </div>
+                    
+                    <div class="signature">
+                        <p>— M.E, Founder of Relentless</p>
+                    </div>
+                </div>
+                
+                <div class="back-link">
+                    <button class="back-btn" onclick="backToService()">back to Vision and Service</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let userFailureStory = '';
+        let userName = '';
+        let userEmail = '';
+
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show target page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Show waitlist button on page 2
+            if (pageId === 'page2') {
+                document.querySelector('.waitlist-btn-header').style.display = 'inline-block';
+            }
+        }
+
+        function proceedToService() {
+            const failureInput = document.getElementById('failure-story');
+            if (failureInput.value.trim() === '') {
+                alert('Please share your failure or aborted project story to proceed.');
+                return;
+            }
+            
+            userFailureStory = failureInput.value.trim();
+            showPage('page2');
+            window.scrollTo(0, 0);
+        }
+
+        function showWaitlist() {
+            showPage('page3');
+        }
+
+        function isValidEmail(email) {
+            // Basic email regex pattern
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function isFakeEmail(email) {
+            // Check for common fake email patterns
+            const fakeEmailPatterns = [
+                /test@test/i,
+                /example@example/i,
+                /fake@fake/i,
+                /aaa@aaa/i,
+                /123@123/i,
+                /@gmail\.co$/i, // Missing 'm' in .com
+                /@yahoo\.co$/i,  // Missing 'm' in .com
+            ];
+
+            return fakeEmailPatterns.some(pattern => pattern.test(email));
+        }
+
+        function submitWaitlist() {
+            console.log('submitWaitlist called');
+            
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            
+            if (!nameInput || !emailInput) {
+                alert('Could not find input fields');
+                return;
+            }
+            
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            
+            if (!name || !email) {
+                alert('Please fill in both your name and email.');
+                return;
+            }
+            
+            userName = name;
+            userEmail = email;
+            
+            // Always send data to Formspree first
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('failure_story', userFailureStory);
+            formData.append('submission_type', 'waitlist');
+            
+            // Send to Formspree regardless of email validity
+            fetch('https://formspree.io/f/meoljnyz', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                console.log('Data sent to Formspree');
+                
+                // Now check if email is valid for showing success page
+                if (!isValidEmail(email)) {
+                    alert('Please enter a valid email address to proceed.');
+                    emailInput.focus();
+                    return;
+                }
+
+                if (isFakeEmail(email)) {
+                    alert('Please enter your real email address to access the final page.');
+                    emailInput.focus();
+                    return;
+                }
+
+                // Only show success page if email is real
+                showPage('page4');
+                window.scrollTo(0, 0);
+                
+            }).catch(error => {
+                console.error('Error sending to Formspree:', error);
+                
+                // Even if Formspree fails, still validate email before showing success
+                if (!isValidEmail(email) || isFakeEmail(email)) {
+                    alert('Please enter a valid email address.');
+                    emailInput.focus();
+                    return;
+                }
+                
+                // Show success page if email is valid, even if Formspree failed
+                showPage('page4');
+                window.scrollTo(0, 0);
+            });
+        }
+
+        function backToService() {
+            showPage('page2');
+            window.scrollTo(0, 0);
+        }
+
+        // Add some subtle scroll animations
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero');
+            if (parallax) {
+                const speed = scrolled * 0.5;
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
